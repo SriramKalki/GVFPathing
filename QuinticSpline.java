@@ -24,41 +24,63 @@ public class QuinticSpline {
         return allPoints;
     }
 
-    public double closestS(Vector2 point){
-        int SAMPLE_SIZE = 100;
-        double closestS = 0;
 
-        for(int i = 0; i <= totalArcLength; i += SAMPLE_SIZE){
-            if(pointAtArcLength(i).subtract(point).getMagSq() < pointAtArcLength(closestS).subtract(point).getMagSq()){
-                closestS = i;
+    public double closestT(Vector2 pos){
+        double curr = 0;
+        for(double i=0; i <= 1; i+=0.01){
+            if(getPoint(i).subtract(pos).getMagSq() < getPoint(curr).subtract(pos).getMagSq()){
+                curr = i;
             }
         }
 
-        return closestS;
+        return curr;
     }
-    public Vector2 pointAtArcLength(double s){
-        int segment = 0; //segment index where point will be located
-        for (Double arcLength : arcLengths) {
-            if (arcLength > s) break;
-            s -= arcLength;
-            segment++;
+
+
+    public static boolean epsilonEquals(double val1, double val2){
+        return Math.abs(val1 - val2) < 1e-6;
+    }
+
+    public Vector2 getPoint(double t){
+        int segment = (int)(t / (1.0 / splines.size()));
+        double inner = t % (1.0 / splines.size());
+        //t is whole curve parameterization from 0 to 1
+
+        if(segment >= splines.size()){
+            segment = splines.size() - 1;
+            inner = 1;
         }
 
-        return splines.get(segment).pointAtArcLength(s);
-
-    }
-
-    public Vector2 dPointAtArcLength(double s){
-        int segment = 0; //segment index where point will be located
-        for (Double arcLength : arcLengths) {
-            if (arcLength > s) break;
-            s -= arcLength;
-            segment++;
+        if(segment < 0){
+            segment = 0;
+            inner = 0;
         }
 
-        return splines.get(segment).dPointAtArcLength(s);
 
+
+        return splines.get(segment).getPoint( t * splines.size() - segment);
     }
+
+    public Vector2 getdPoint(double t){
+        int segment = (int)(t / (1.0 / splines.size()));
+        double inner = t % (1.0 / splines.size());
+        //t is whole curve parameterization from 0 to 1
+
+        if(segment >= splines.size()){
+            segment = splines.size() - 1;
+            inner = 1;
+        }
+
+        if(segment < 0){
+            segment = 0;
+            inner = 0;
+        }
+
+
+
+        return splines.get(segment).getdPoint( t * splines.size() - segment);
+    }
+
     public ArrayList<QuinticSplineSegment> getSplines() {
         return splines;
     }

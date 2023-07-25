@@ -38,7 +38,7 @@ public class QuinticSplineSegment {
     }
 
     public Vector2 getPoint(double t){
-        if(t < 0 || t > 1) return null;
+        //if(t < 0 || t > 1) return null;
 
         double x = getX(t);
         double y = getY(t);
@@ -62,29 +62,6 @@ public class QuinticSplineSegment {
         return ans;
     }
 
-    public Vector2 pointAtArcLength(double arcLength){
-        double closestNum = 0;
-
-        for(double i =0; i <=1; i += STEP_RESOLUTION){
-            if(Math.abs(getArcLength(i) - arcLength) < Math.abs(getArcLength(closestNum) - arcLength)){
-                closestNum = i;
-            }
-
-        }
-        return getPoint(closestNum);
-    }
-
-    public Vector2 dPointAtArcLength(double arcLength){
-        double closestNum = 0;
-
-        for(double i =0; i <=1; i += STEP_RESOLUTION){
-            if(Math.abs(getArcLength(i) - arcLength) < Math.abs(getArcLength(closestNum) - arcLength)){
-                closestNum = i;
-            }
-
-        }
-        return getdPoint(closestNum);
-    }
 
 
     public double getArcLength(double t){

@@ -38,6 +38,7 @@ public class Vector2 {
         return x * x + y * y;
     }
 
+    public double dot(Vector2 other){return this.getX() * other.getX() + this.getY() * other.getY();}
     // Operations
 
     public Vector2 add(Vector2 other) {
@@ -47,6 +48,7 @@ public class Vector2 {
     public Vector2 subtract(Vector2 other) {
         return subtract(this, other);
     }
+
 
     public Vector2 scalarMultiply(double scalar) {
         return scalarMultiply(this, scalar);
